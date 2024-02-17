@@ -10,7 +10,6 @@ class RemotePopularCategoryService{
     var response = await client.get(
       Uri.parse('$remoteUrl?populate=category,category.image&pagination[start]=0&pagination[limit]=3'),
     );
-    print('res ${response.body}');
     return response;
   }
 }

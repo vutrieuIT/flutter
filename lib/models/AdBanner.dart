@@ -1,7 +1,13 @@
 import 'dart:convert';
+import 'package:hive/hive.dart';
 
+part 'AdBanner.g.dart';
+
+@HiveType(typeId: 1)
 class AdBanner {
+  @HiveField(0)
   final int id;
+  @HiveField(1)
   final String image;
 
   AdBanner({required this.id, required this.image});
