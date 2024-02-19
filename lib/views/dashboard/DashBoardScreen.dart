@@ -1,5 +1,6 @@
 import 'package:app/controllers/DashboardController.dart';
 import 'package:app/views/home/HomeScreen.dart';
+import 'package:app/views/product/product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:get/get.dart';
@@ -16,9 +17,7 @@ class DashBoardScreen extends StatelessWidget {
             index: controller.tabIndex,
             children: [
               const HomeScreen(),
-              Container(
-                color: Colors.red,
-              ),
+              const ProductScreen(),
               Container(
                 color: Colors.blue,
               ),
