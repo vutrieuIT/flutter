@@ -1,5 +1,7 @@
+import 'package:app/controllers/Controllers.dart';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart' hide Badge;
+import 'package:get/get.dart';
 
 class MainHeader extends StatelessWidget {
   const MainHeader({super.key});
@@ -31,21 +33,41 @@ class MainHeader extends StatelessWidget {
                   ),
                 ],
               ),
-              child: TextField(
-                autofocus: false,
-                onSubmitted: (value) {},
-                onChanged: (value) {},
-                decoration: InputDecoration(
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
-                  fillColor: Colors.white,
-                  filled: true,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(24),
-                    borderSide: BorderSide.none,
+              child: Obx(
+                () => TextField(
+                  autofocus: false,
+                  controller: productController.searchTextEditingController,
+                  onSubmitted: (value) {
+                    productController.getProductByName(keyword: value);
+                    dashboardController.updateTabIndex(1);
+                  },
+                  onChanged: (value) {
+                    productController.searchVal.value = value;
+                  },
+                  decoration: InputDecoration(
+                    suffixIcon: productController.searchVal.value.isNotEmpty
+                        ? IconButton(
+                            onPressed: () {
+                              FocusScope.of(context).requestFocus(FocusNode());
+                              productController.searchTextEditingController
+                                  .clear();
+                              productController.searchVal.value = '';
+                              productController.getProducts();
+                            },
+                            icon: const Icon(Icons.clear),
+                          )
+                        : null,
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 14, vertical: 16),
+                    fillColor: Colors.white,
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(24),
+                      borderSide: BorderSide.none,
+                    ),
+                    hintText: 'Search...',
+                    prefixIcon: const Icon(Icons.search),
                   ),
-                  hintText: 'Search...',
-                  prefixIcon: const Icon(Icons.search),
                 ),
               ),
             ),
