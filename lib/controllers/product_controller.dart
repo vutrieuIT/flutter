@@ -10,7 +10,6 @@ class ProductController extends GetxController {
   RxList<Product> productList = List<Product>.empty(growable: true).obs;
   RxBool isProductLoading = false.obs;
 
-
   @override
   void onInit() {
     getProducts();
@@ -39,7 +38,18 @@ class ProductController extends GetxController {
       }
     } finally {
       isProductLoading(false);
+    }
+  }
 
+  void getProductByCategory({required int id}) async {
+    try {
+      isProductLoading(true);
+      var res = await RemoteProductService().getByCategory(id: id);
+      if (res != null) {
+        productList.assignAll(productListFromJson(res.body));
+      }
+    } finally {
+      isProductLoading(false);
     }
   }
 }

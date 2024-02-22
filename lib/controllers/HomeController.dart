@@ -54,15 +54,15 @@ class HomeController extends GetxController {
   void getPopularCategory() async {
     try {
       isPopularCategoryLoading(true);
-      if (_localCategoryService.getCategories().isNotEmpty) {
-        popularCategoryList.addAll(_localCategoryService.getCategories());
+      if (_localCategoryService.getPopularCategories().isNotEmpty) {
+        popularCategoryList.addAll(_localCategoryService.getPopularCategories());
       }
       var res = await RemotePopularCategoryService().get();
       if (res != null) {
         popularCategoryList
             .assignAll(popularCategoryListFromJson(res.body as String));
-        _localCategoryService.assignAllCategories(
-            categories: popularCategoryListFromJson(res.body as String));
+        _localCategoryService.assignAllPopularCategories(
+            popularCategories: popularCategoryListFromJson(res.body as String));
       }
     } finally {
       print('category: ${popularCategoryList.length}');

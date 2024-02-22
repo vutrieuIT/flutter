@@ -1,4 +1,5 @@
 import 'package:app/controllers/DashboardController.dart';
+import 'package:app/views/category/category_screen.dart';
 import 'package:app/views/home/HomeScreen.dart';
 import 'package:app/views/product/product_screen.dart';
 import 'package:flutter/material.dart';
@@ -18,9 +19,7 @@ class DashBoardScreen extends StatelessWidget {
             children: [
               const HomeScreen(),
               const ProductScreen(),
-              Container(
-                color: Colors.blue,
-              ),
+              const CategoryScreen(),
               Container(
                 color: Colors.orange,
               ),
