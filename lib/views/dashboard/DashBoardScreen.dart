@@ -1,4 +1,5 @@
 import 'package:app/controllers/DashboardController.dart';
+import 'package:app/views/account/account_screen.dart';
 import 'package:app/views/category/category_screen.dart';
 import 'package:app/views/home/HomeScreen.dart';
 import 'package:app/views/product/product_screen.dart';
@@ -16,13 +17,11 @@ class DashBoardScreen extends StatelessWidget {
         body: SafeArea(
           child: IndexedStack(
             index: controller.tabIndex,
-            children: [
-              const HomeScreen(),
-              const ProductScreen(),
-              const CategoryScreen(),
-              Container(
-                color: Colors.orange,
-              ),
+            children: const [
+              HomeScreen(),
+              ProductScreen(),
+              CategoryScreen(),
+              AccountScreen()
             ],
           ),
         ),
