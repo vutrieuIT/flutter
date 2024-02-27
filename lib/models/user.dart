@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 
 part 'user.g.dart';
@@ -25,11 +26,12 @@ class User {
       required this.birthDay});
 
   factory User.fromJson(Map<String, dynamic> data) => User(
-      id: data['id'],
-      fullName: data["fullName"],
-      email: data["email"],
-      image: data['image']['url'],
-      birthDay: DateTime.tryParse(data['age']));
+        id: data['id'].toString(),
+        fullName: data["fullName"],
+        email: data["email"],
+        image: data['image'] == null ? null : data['image']['url'],
+        birthDay: data['age'] == null ? null : DateTime.parse(data['age']),
+      );
 }
 
 User userFromJson(String str) => User.fromJson(jsonDecode(str));

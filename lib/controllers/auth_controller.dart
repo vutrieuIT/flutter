@@ -23,16 +23,15 @@ class AuthController extends GetxController {
       required String email,
       required String password}) async {
     try {
-      EasyLoading.show(
-        status: "Loading...",
-        dismissOnTap: false
-      );
+      EasyLoading.show(status: "Loading...", dismissOnTap: false);
 
-      var res = await RemoteAuthService().login(email: email, password: password);
+      var res =
+          await RemoteAuthService().login(email: email, password: password);
 
-      if (res.statusCode == 200){
+      if (res.statusCode == 200) {
         String token = jsonDecode(res.body)['jwt'];
-        var userRes = await RemoteAuthService().createProfile(fullName: fullName, token: token);
+        var userRes = await RemoteAuthService()
+            .createProfile(fullName: fullName, token: token);
         if (userRes.statusCode == 200) {
           user.value = userFromJson(userRes.body);
           await _localAuthService.addToken(token: token);
@@ -40,15 +39,53 @@ class AuthController extends GetxController {
           EasyLoading.showSuccess("welcome my app");
           Navigator.of(Get.overlayContext!).pop();
         } else {
-
-        EasyLoading.showError("somethings wrong, try again");
+          EasyLoading.showError("somethings wrong, try again");
         }
       } else {
         EasyLoading.showError("somethings wrong, try again");
       }
-
+    } catch (e, stackTrace) {
+      EasyLoading.showError("somethings wrong, try again");
     } finally {
       EasyLoading.dismiss();
     }
+  }
+
+  void signIn(
+      {
+        required String email,
+        required String password}) async {
+    try {
+      EasyLoading.show(status: "Loading...", dismissOnTap: false);
+
+      var res =
+      await RemoteAuthService().signIn(email: email, password: password);
+
+      if (res.statusCode == 200) {
+        String token = jsonDecode(res.body)['jwt'];
+        var userRes = await RemoteAuthService()
+            .getProfile(token: token);
+        if (userRes.statusCode == 200) {
+          user.value = userFromJson(userRes.body);
+          await _localAuthService.addToken(token: token);
+          await _localAuthService.addUser(user: user.value!);
+          EasyLoading.showSuccess("welcome my app");
+          Navigator.of(Get.overlayContext!).pop();
+        } else {
+          EasyLoading.showError("somethings wrong, try again");
+        }
+      } else {
+        EasyLoading.showError("somethings wrong, try again");
+      }
+    } catch (e, stackTrace) {
+      EasyLoading.showError("somethings wrong, try again");
+    } finally {
+      EasyLoading.dismiss();
+    }
+  }
+
+  void signOut() async {
+    user.value = null;
+    await _localAuthService.clear();
   }
 }

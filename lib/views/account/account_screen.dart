@@ -1,6 +1,8 @@
+import 'package:app/controllers/Controllers.dart';
 import 'package:app/views/account/auth/sign_in_screen.dart';
 import 'package:app/views/account/auth/sign_up_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
@@ -15,29 +17,30 @@ class AccountScreen extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
-          const Row(
-            children: [
-              CircleAvatar(
-                backgroundColor: Colors.grey,
-                radius: 36,
-                child: CircleAvatar(
-                  radius: 35,
-                  backgroundImage: AssetImage("user_image.png"),
-                ),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Column(
+          Obx(() => Row(
                 children: [
-                  Text(
-                    'sign in your account',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                  const CircleAvatar(
+                    backgroundColor: Colors.grey,
+                    radius: 36,
+                    child: CircleAvatar(
+                      radius: 35,
+                      backgroundImage: AssetImage("user_image.png"),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        authController.user.value?.fullName??'sign in your account',
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w500),
+                      )
+                    ],
                   )
                 ],
-              )
-            ],
-          ),
+              )),
           const SizedBox(
             height: 50,
           ),
@@ -53,14 +56,18 @@ class AccountScreen extends StatelessWidget {
           buildAccountCard(title: "Setting", onClick: () {}),
           buildAccountCard(title: "About us", onClick: () {}),
           buildAccountCard(title: "Terms of service", onClick: () {}),
-          buildAccountCard(
-              title: "Sign in",
+          Obx(() => buildAccountCard(
+              title: authController.user.value == null ? "Sign in" : "Sign out",
               onClick: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const SignUpScreen()));
-              }),
+                if (authController.user.value == null) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SignUpScreen()));
+                } else {
+                  authController.signOut();
+                }
+              })),
         ],
       ),
     );
